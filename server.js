@@ -42,8 +42,9 @@ app.post("/api/estudiantes", async (req, res) => {
   }
 });
 
-// 3. Registrar puntaje/progreso de un juego (RF-05)
-app.post("/api/progresos", async (req, res) => {
+
+// Actualizar un progreso basado en estudiante y actividad
+app.put("/api/progresos", async (req, res) => {
   const { estudiante_id, actividad_id, puntaje } = req.body;
   if (!estudiante_id || !actividad_id || puntaje === undefined) {
     return res
@@ -53,11 +54,13 @@ app.post("/api/progresos", async (req, res) => {
 
   try {
     const [resultado] = await pool.query(
-      "INSERT INTO progresos (estudiante_id, actividad_id, puntaje) VALUES (?, ?, ?)",
+      "INSERT INTO progresos (estudiante_id, actividad_id, puntaje) VALUES (?, ?, ?) " +
+        "ON DUPLICATE KEY UPDATE " +
+        "puntaje = VALUES(puntaje); ",
       [estudiante_id, actividad_id, puntaje],
     );
     res
-      .status(201)
+      .status(200)
       .json({ id: resultado.insertId, estudiante_id, actividad_id, puntaje });
   } catch (error) {
     res.status(500).json({ error: error.message });

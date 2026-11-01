@@ -7,7 +7,14 @@ const app = express();
 const PORT = process.env.PORT || 10001;
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://dw-frontend-react-2026-bwahg2csbpfyazgk.northcentralus-01.azurewebsites.net/",
+    ],
+  }),
+);
 app.use(express.json());
 
 // --- RUTAS API ---

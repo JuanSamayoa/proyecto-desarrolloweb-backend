@@ -6,15 +6,26 @@ const pool = require("./db");
 const app = express();
 const PORT = process.env.PORT || 10001;
 
+const origenesPermitidos = new Set([
+  "http://localhost:5173",
+  "https://dw-frontend-react-2026-bwahg2csbpfyazgk.northcentralus-01.azurewebsites.net",
+]);
+
+const opcionesCors = {
+  origin: (origin, callback) => {
+    if (!origin || origenesPermitidos.has(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+};
+
+
 // Middlewares
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://dw-frontend-react-2026-bwahg2csbpfyazgk.northcentralus-01.azurewebsites.net/",
-    ],
-  }),
-);
+app.use(cors(opcionesCors));
 app.use(express.json());
 
 // --- RUTAS API ---

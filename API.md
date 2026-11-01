@@ -16,6 +16,7 @@ El puerto puede cambiar si se define la variable de entorno `PORT`.
 | Metodo | Endpoint           | Descripcion                                           |
 | ------ | ------------------ | ----------------------------------------------------- |
 | `GET`  | `/api/actividades` | Obtiene todas las actividades educativas.             |
+| `GET`  | `/api/estudiantes` | Obtiene todos los estudiantes registrados.            |
 | `POST` | `/api/estudiantes` | Registra un estudiante nuevo.                         |
 | `PUT`  | `/api/progresos`   | Registra o actualiza el progreso de un estudiante.    |
 | `GET`  | `/api/progresos`   | Obtiene el reporte de progresos, con filtro opcional. |
@@ -82,6 +83,38 @@ El texto exacto de `error` depende del error informado por MySQL.
 
 ## 2. Registrar un estudiante
 
+### `GET /api/estudiantes`
+
+Devuelve todos los estudiantes registrados, ordenados por nombre. No requiere parametros, cuerpo ni autenticacion.
+
+### Solicitud
+
+```bash
+curl http://localhost:10001/api/estudiantes
+```
+
+### Respuesta exitosa: `200 OK`
+
+```json
+[
+  {
+    "id": 1,
+    "nombre": "Ana Garcia",
+    "edad": 10
+  }
+]
+```
+
+### Posible respuesta de error: `500 Internal Server Error`
+
+```json
+{
+  "error": "Error al consultar la base de datos"
+}
+```
+
+## 3. Registrar un estudiante
+
 ### `POST /api/estudiantes`
 
 Crea un estudiante nuevo en la tabla `estudiantes`.
@@ -137,7 +170,7 @@ Se devuelve cuando falta `nombre` o `edad`.
 }
 ```
 
-## 3. Registrar o actualizar un progreso
+## 4. Registrar o actualizar un progreso
 
 ### `PUT /api/progresos`
 
@@ -196,7 +229,7 @@ Se devuelve cuando falta alguno de los campos obligatorios.
 }
 ```
 
-## 4. Consultar el reporte de progresos
+## 5. Consultar el reporte de progresos
 
 ### `GET /api/progresos`
 

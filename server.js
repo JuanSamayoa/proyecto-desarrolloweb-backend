@@ -37,6 +37,17 @@ app.get("/api/actividades", async (req, res) => {
 });
 
 // 2. Registrar un nuevo estudiante (RF-01)
+app.get("/api/estudiantes", async (req, res) => {
+  try {
+    const [filas] = await pool.query(
+      "SELECT id, nombre, edad FROM estudiantes ORDER BY nombre ASC",
+    );
+    res.json(filas);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post("/api/estudiantes", async (req, res) => {
   const { nombre, edad } = req.body;
   if (!nombre || !edad) {

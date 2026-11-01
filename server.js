@@ -13,16 +13,12 @@ const origenesPermitidos = new Set([
 
 const opcionesCors = {
   origin: (origin, callback) => {
-    if (!origin || origenesPermitidos.has(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
+    const esOrigenPermitido = !origin || origenesPermitidos.has(origin);
+    callback(null, esOrigenPermitido);
   },
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
 };
-
 
 // Middlewares
 app.use(cors(opcionesCors));
@@ -59,7 +55,6 @@ app.post("/api/estudiantes", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
 
 // Actualizar un progreso basado en estudiante y actividad
 app.put("/api/progresos", async (req, res) => {
